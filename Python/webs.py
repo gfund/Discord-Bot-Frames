@@ -1,50 +1,25 @@
-from webs import keep_alive #webserver
-import os #used to access .env file 
-#DISCORD IMPORTS
-###########################
-import discord
+from flask import Flask
+from threading import Thread
+app=Flask('')
+app = Flask(__name__)
 
-import discord.ext
-from discord.ext import commands
-###############################
+@app.route('/') # this is the home page route
 
+    
+@app.route('/about')
+def welcome():
+  return "Booted"
 
-intents = discord.Intents.default()
-intents.members = True
-bot = commands.Bot(command_prefix='!',intents=intents)
-#--------------------EVENTS--------------------------
-@bot.event
-async def on_ready():
-  #Statements that execute when  the bot boots.
-  print("") # do nothing but enough not to cause an error
+ 
+   
 
-@bot.event
-async def on_message(message):
-  #Statements that execute when a message is sent in a server(guild), the bot is in
-  print(message.content)
-@bot.event
-async def on_member_join(member):
-  #Statements that execute when someone joins a server the bot is in
-  print(str(member))
-
-
-#--------------------COMMANDS--------------------------  
-@bot.command()
-async def ping(ctx):
-    await ctx.send((str((bot.latency*1000))) + "ms")
-
-
-
-
-
-
-
-#----------------------RUN BOT CODE-------------------------
-
-
-
-#keep the bot online         
-keep_alive()
-#get the token from .env 
-TOKEN=os.environ.get("DISCORD_BOT_SECRET")
-bot.run(TOKEN)
+@app.route('/')
+def home():
+   return ("ALL GOOD")
+def run():
+ app.run(host="0.0.0.0",port=8081)
+def keep_alive():
+ t=Thread(target=run)
+ t.start()
+ if __name__ == '__main__':
+  app.run(host='0.0.0.0',port=8081) # This line is required to run Flask on repl.it
